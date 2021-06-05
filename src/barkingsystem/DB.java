@@ -9,7 +9,7 @@ public class DB
     protected static ArrayList<ArrayList> bike=new ArrayList<>(); 
     protected static ArrayList<ArrayList> car=new ArrayList<>();
     protected static ArrayList<ArrayList> bus=new ArrayList<>();
-    protected static ArrayList<Integer> No=new ArrayList<Integer>();
+    protected static ArrayList<String> No=new ArrayList<>();
     protected static ArrayList<String> couponCode=new ArrayList<>();
     
     protected int bikeAmnt=20; 

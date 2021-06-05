@@ -8,11 +8,11 @@ public class Entry extends DB
 {
  
     Scanner sc=new Scanner(System.in);
-    public boolean vehicle(ArrayList array,int no)
+    public boolean vehicle(ArrayList<String> array,String no)
     {
-        for(Object i:array)
+        for(String i:array)
         {
-            if((int)i==no)
+            if(!i.contains("-") && i.equals(no))
                 return true;
         }
         return false;
@@ -48,17 +48,24 @@ public class Entry extends DB
     {
         switch(vType)
             {
-                case "Bike" -> bike.add(pas);
+                case "Bike":
+                    bike.add(pas);
+                    break;
                 
-                case "Car" -> car.add(pas);
+                case "Car":
+                    car.add(pas);
+                    break;
                 
-                case "Bus" -> bus.add(pas); 
+                case "Bus":
+                    bus.add(pas);
+                    break;
                 
-                default -> {break;}
+                default:
+                    break;
             }
     }
     
-    public void send(ArrayList<ArrayList> list,String vType,String time,int st,int en,ArrayList pas)
+    public void addToLot(ArrayList<ArrayList> list,String vType,String time,int st,int en,ArrayList pas)
     {
         int f=0;
         for(ArrayList t:list)
@@ -66,6 +73,7 @@ public class Entry extends DB
             if(t.get(2).equals("Reserve") && t.get(0)==pas.get(0))
             {
                 f=1;t.add(time);
+                No.remove(String.valueOf(t.get(0))+"-R");
             }
         }
         if(f==0)
@@ -89,13 +97,15 @@ public class Entry extends DB
         ArrayList<Object> pas=new ArrayList<>();
         String vType;
         int st,en,vNo;
+        String vn;
         System.out.println("Enter your vehicle No");
-        vNo=Integer.parseInt(sc.nextLine().trim());
-        while(vehicle(No,vNo))
+        vn=sc.nextLine().trim();
+        while(vehicle(No,vn))
         {
             System.out.println("Check you vehicle no");
-           vNo=Integer.parseInt(sc.nextLine().trim());
+            vn=sc.nextLine().trim();
         }
+        vNo=Integer.parseInt(vn);
         pas.add(vNo);
         System.out.println("1:Bike 2:Car 3:Bus");
         int in=Integer.parseInt(sc.nextLine().trim());
@@ -115,10 +125,8 @@ public class Entry extends DB
             st=2*c;en=chart[0].length;
         }
         pas.add(vType);
-        
-        System.out.println("You Reserve the space enter 1 otherwise enter 2 alreaday regsistered or Unreserved Booking");
+        System.out.println("Enter 1 To reserve the parking space\nEnter 2 To park the vehicle");
         int av=Integer.parseInt(sc.nextLine().trim());
-        //sc.nextLine();
         if(av==1)
         {
             int fl,sp;
@@ -146,32 +154,36 @@ public class Entry extends DB
                 chart[fl][sp]="R-"+vType;
                 pas.add(fl); 
                 pas.add(sp);
+                No.add(vn+"-R");
                 add(vType,pas);
             }
         }
         else
         {
-            System.out.println("Enter the Time HH:MM");
+            System.out.println("Enter the Time in 24 Hour format {HH:MM}");
             String time=sc.nextLine();
-            No.add(vNo);
+            No.add(vn);
             switch(vType)
             { 
-                case "Bike" -> 
+                case "Bike": 
                 {
-                    send(bike,vType,time,st,en,pas);
+                    addToLot(bike,vType,time,st,en,pas);
+                    break;
                 }
                 
-                case "Car" -> 
+                case "Car":
                 {
-                    send(car,vType,time,st,en,pas);
+                    addToLot(car,vType,time,st,en,pas);
+                    break;
                 }
     
-                case "Bus" ->  
+                case "Bus": 
                 {
-                    send(bus,vType,time,st,en,pas);
+                    addToLot(bus,vType,time,st,en,pas);
+                    break;
                 }
                 
-                default -> 
+                default:
                 {
                     break;
                 }

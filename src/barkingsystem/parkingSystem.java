@@ -13,29 +13,39 @@ public class parkingSystem {
         int space=Integer.parseInt(sc.nextLine()); 
         while(space%5!=0)
         {
-            System.out.println("Enter the correct input");
+            System.out.println("Enter the correct space input");
             space=Integer.parseInt(sc.nextLine());
         }
         new DB().design(floor,space);
         boolean end=false; 
         while(!end) 
         {
-            System.out.println("1:Entry the Vehicle  2:Exit the BarkingArea 3:Exit program");
+            System.out.println("1:Vehicle Entry  2:To Exit the ParkingArea 3:To view the parking lot 4:Exit program");
             int n=sc.nextInt(); 
             switch(n)
             {
                 
-                case 1 -> new Entry().entryMethod(); 
+                case 1:
+                    new Entry().entryMethod(); 
+                    break;
                 
-                case 2 -> new Exit().exitMethod(); 
+                case 2:
+                    new Exit().exitMethod(); 
+                    break;
                 
-                case 3 -> new viewChart().method();
+                case 3:
+                    new viewChart().method();
+                    break;
              
-                case 4 -> System.exit(0); 
+                case 4:
+                    System.exit(0); 
             
-                case 5 -> DB.method();
+                case 5:
+                    DB.method();
+                    break;
                 
-                default ->  {break;}
+                default:
+                    break;
             }
         }
     }
