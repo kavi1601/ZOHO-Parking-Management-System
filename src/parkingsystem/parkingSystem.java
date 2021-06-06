@@ -1,5 +1,5 @@
 
-package barkingsystem;
+package parkingsystem;
 
 import java.util.Scanner;
 
@@ -11,10 +11,18 @@ public class parkingSystem {
         System.out.println("Enter the No.of Floors && No.of spaces in each floor");
         int floor=Integer.parseInt(sc.nextLine());
         int space=Integer.parseInt(sc.nextLine()); 
-        while(space%5!=0)
+        while(space%5!=0 || floor==0)
         {
-            System.out.println("Enter the correct space input");
-            space=Integer.parseInt(sc.nextLine());
+            if(floor==0)
+            {
+                System.out.println("Enter the correct floor input");
+                floor=Integer.parseInt(sc.nextLine());
+            }
+            else
+            {
+                System.out.println("Enter the correct space input");
+                space=Integer.parseInt(sc.nextLine());
+            }
         }
         new DB().design(floor,space);
         boolean end=false; 
@@ -38,6 +46,10 @@ public class parkingSystem {
                     break;
              
                 case 4:
+                    System.out.printf("Total Bike Amount :%d\n No of Bikes Parked count :%d\n",DB.totalBikeAmnt,DB.parkingBikeCount);
+                    System.out.printf("Total Car Amount :%d\n No of Cars Parked count :%d\n",DB.totalCarAmnt,DB.parkingCarCount);
+                    System.out.printf("Total Bus Amount :%d\n No of Buses Parked count :%d\n",DB.totalBusAmnt,DB.parkingBusCount);
+                    System.out.printf("Total Amount :%d",(DB.totalBikeAmnt+DB.totalCarAmnt+DB.totalBusAmnt));
                     System.exit(0); 
             
                 case 5:

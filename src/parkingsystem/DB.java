@@ -1,5 +1,5 @@
 
-package barkingsystem;
+package parkingsystem;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,12 @@ public class DB
     protected int busAmnt=50;
     
     static int c;
-    static int totalAmnt=0; 
+    static int totalBikeAmnt=0; 
+    static int totalCarAmnt=0; 
+    static int totalBusAmnt=0; 
+    static int parkingBikeCount=0;
+    static int parkingCarCount=0;
+    static int parkingBusCount=0;
     
     public void design(int floor,int space)
     {

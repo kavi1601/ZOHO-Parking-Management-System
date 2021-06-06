@@ -1,5 +1,5 @@
 
-package barkingsystem;
+package parkingsystem;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,7 +13,7 @@ public class Exit extends DB
         return (Integer.parseInt(str[0])*60)+Integer.parseInt(str[1]);
     }
     
-    public void calculateAmnt(String enTime,String exTime,String vType,boolean res)
+    public int calculateAmnt(String enTime,String exTime,String vType,boolean res)
     {
         int ren=timeConverter(enTime);
         int rex=timeConverter(exTime);
@@ -37,6 +37,7 @@ public class Exit extends DB
                     amnt=bikeAmnt+(bikeAmnt/2)*(h-1);
                 else
                     amnt=(bikeAmnt/fh)+(((bikeAmnt)/2)*(h-1))-(((bikeAmnt)/2)*(h-1))/oh;
+                totalBikeAmnt+=amnt;                
                 break;
             
             case "Car": 
@@ -44,6 +45,7 @@ public class Exit extends DB
                     amnt=carAmnt+(carAmnt/2)*(h-1);
                 else
                     amnt=(carAmnt/fh)+(((carAmnt)/2)*(h-1))-(((carAmnt)/2)*(h-1))/oh; 
+                totalCarAmnt+=amnt;                
                 break;
             
             case "Bus":
@@ -51,14 +53,15 @@ public class Exit extends DB
                     amnt=busAmnt+(busAmnt/2)*(h-1);
                 else 
                     amnt=(busAmnt/fh)+(((carAmnt)/2)*(h-1))-(((busAmnt)/2)*(h-1))/oh;
+                totalBusAmnt+=amnt;
                 break;
             
             default: 
                 break;
         }
-        totalAmnt+=amnt;
-        System.out.println(amnt+" "+totalAmnt);
-             
+        System.out.println(amnt);
+        return amnt;     
+        
     }
     
             
@@ -72,6 +75,7 @@ public class Exit extends DB
                 return false;
             }
         }
+        couponCode.add(code);
         return true;    
     }
         
@@ -81,6 +85,7 @@ public class Exit extends DB
         int f=0,c=0;
         for(int i=0;i<list.size();i++)
         {
+            //System.out.println(list.get(i));
             ArrayList t=list.get(i);
             if(t.size()==6 && (int)t.get(0)==vNo)
             {
@@ -105,24 +110,35 @@ public class Exit extends DB
                         System.out.println("Coupon is Invalid");
                     }
                 }
-                calculateAmnt((String)t.get(5),time,vType,res);
-                bike.remove(t);
+                int amnt=calculateAmnt((String)t.get(5),time,vType,res);
+                System.out.println("__________ Parking Receipt __________");
+                System.out.printf("Vehicle No :%d\tVehcile Type :%s\nFloor Location :%d\tSpace Location :%d\nEntry Time :%s\tExit Time:%s\nCharge Amount :%d\n",t.get(0),t.get(1),(int)t.get(3)+1,(int)t.get(4)+1,t.get(5),time,amnt);
+                if(vType=="Bike") 
+                    bike.remove(t);
+                else if(vType=="Car")
+                    car.remove(t);
+                else 
+                    bus.remove(t);
                 No.remove(String.valueOf(vNo));
                 f=1;
             }
-            else
+            else if((int)t.get(0)==vNo && t.size()==5)
+                c=1;
+            /*else
             {
-                if((int)t.get(0)!=vNo)
+                if((int)t.get(0)==vNo &&)
                     c=1;
-            }
+                else
+                    c=0;
+            }*/
         }
-        if(f==1)
-            System.out.println("Thank You & You are Welcome");
-        else if(list.size()==0)
+        if(list.size()==0 && f==0)
             System.out.println("Vehicle no is not matched");
+        else if(f==1)
+            System.out.println("      Thank You & You are Welcome      ");
         else
         {
-            if(c==0)
+            if(c==1)
                 System.out.println("You are reserved the space but not parking the "+vType);
             else
                 System.out.println("Vehicle no is not matched");
@@ -130,6 +146,7 @@ public class Exit extends DB
     }
     public void exitMethod()
     {
+        
         System.out.println("Enter your vehicle No");
         int vNo=Integer.parseInt(sc.nextLine().trim());
         System.out.println("1:Bike 2:Car 3:Bus");

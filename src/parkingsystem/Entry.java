@@ -1,5 +1,5 @@
 
-package barkingsystem;
+package parkingsystem;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,20 +8,38 @@ public class Entry extends DB
 {
  
     Scanner sc=new Scanner(System.in);
-    public boolean vehicle(ArrayList<String> array,String no)
+    public int vehicle(ArrayList<String> array,String no,String type)
     {
+        //System.out.println(array);
         for(String i:array)
         {
             if(!i.contains("-") && i.equals(no))
-                return true;
+                return 1;
+            if(i.contains("-"))
+            {
+                if(type==null)
+                {
+                    if(!i.equals(no+"-R"+type))
+                        return 0;
+                    else
+                        return 1;
+                }
+                else
+                {
+                    if(i.equals(no+"-R"+type))
+                        return 2;
+                    else if(i.contains(no))
+                        return 1;
+                }
+            }
         }
-        return false;
+        return 0;
     }
     
     public int[] check(int start,int end,String str,String res)
     {
         int fr=0; 
-        String s=str+"Occupied";
+        String s="O-"+str;
         while(fr<chart.length)
         {
             for(int i=start;i<end;i++)
@@ -50,14 +68,17 @@ public class Entry extends DB
             {
                 case "Bike":
                     bike.add(pas);
+                    parkingBikeCount+=1;
                     break;
                 
                 case "Car":
                     car.add(pas);
+                    parkingCarCount+=1;
                     break;
                 
                 case "Bus":
                     bus.add(pas);
+                    parkingBusCount+=1;
                     break;
                 
                 default:
@@ -70,10 +91,13 @@ public class Entry extends DB
         int f=0;
         for(ArrayList t:list)
         {
-            if(t.get(2).equals("Reserve") && t.get(0)==pas.get(0))
+            //System.out.println(t.get(0)==pas.get(0));
+            if(t.get(2).equals("Reserve") && (int)t.get(0)==(int)pas.get(0))
             {
+                //System.out.println(t);
                 f=1;t.add(time);
-                No.remove(String.valueOf(t.get(0))+"-R");
+                No.remove(String.valueOf(t.get(0))+"-R"+vType);
+                No.add(String.valueOf(t.get(0)));
             }
         }
         if(f==0)
@@ -85,6 +109,7 @@ public class Entry extends DB
                 pas.add(result[0]); 
                 pas.add(result[1]); 
                 pas.add(time);
+                No.add(String.valueOf(pas.get(0)));
                 add(vType,pas);
             }
             else
@@ -100,7 +125,7 @@ public class Entry extends DB
         String vn;
         System.out.println("Enter your vehicle No");
         vn=sc.nextLine().trim();
-        while(vehicle(No,vn))
+        while(vehicle(No,vn,null)==1)
         {
             System.out.println("Check you vehicle no");
             vn=sc.nextLine().trim();
@@ -124,9 +149,22 @@ public class Entry extends DB
             vType="Bus";
             st=2*c;en=chart[0].length;
         }
-        pas.add(vType);
-        System.out.println("Enter 1 To reserve the parking space\nEnter 2 To park the vehicle");
-        int av=Integer.parseInt(sc.nextLine().trim());
+        pas.add(vType); 
+        int av=0;
+        int rs=vehicle(No,vn,vType);
+        if(rs==0)
+        {
+            System.out.println("Enter 1 To reserve the parking space\nEnter 2 To park the vehicle");
+            av=Integer.parseInt(sc.nextLine().trim());
+        }
+        else if(rs==2)
+        {
+            av=2;
+        }
+        else
+        {
+            System.out.println("Vehicle no is already exists");
+        }
         if(av==1)
         {
             int fl,sp;
@@ -137,13 +175,14 @@ public class Entry extends DB
             else
             {
                 pas.add("Reserve");
-                int i,j;
+                viewChart.method();
+                /*int i,j;
                 for(i=0;i<chart.length;i++)
                 {
                     for(j=0;j<chart[i].length;j++)
                         System.out.printf("%s ",chart[i][j]);
                     System.out.println("");
-                }
+                }*/
                 do
                 {
                     System.out.println("Enter valid input");
@@ -154,15 +193,15 @@ public class Entry extends DB
                 chart[fl][sp]="R-"+vType;
                 pas.add(fl); 
                 pas.add(sp);
-                No.add(vn+"-R");
+                No.add(vn+"-R"+vType);
                 add(vType,pas);
             }
         }
-        else
+        else if(av==2)
         {
             System.out.println("Enter the Time in 24 Hour format {HH:MM}");
             String time=sc.nextLine();
-            No.add(vn);
+            //No.add(vn);
             switch(vType)
             { 
                 case "Bike": 
