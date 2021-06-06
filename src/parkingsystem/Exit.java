@@ -124,13 +124,6 @@ public class Exit extends DB
             }
             else if((int)t.get(0)==vNo && t.size()==5)
                 c=1;
-            /*else
-            {
-                if((int)t.get(0)==vNo &&)
-                    c=1;
-                else
-                    c=0;
-            }*/
         }
         if(list.size()==0 && f==0)
             System.out.println("Vehicle no is not matched");
