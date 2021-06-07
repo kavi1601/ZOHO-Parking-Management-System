@@ -95,6 +95,8 @@ public class Entry extends DB
             if(t.get(2).equals("Reserve") && (int)t.get(0)==(int)pas.get(0))
             {
                 f=1;t.add(time);
+                System.out.println("__________ Parking Entry Receipt __________");
+                System.out.printf("Vehicle No :%d\tVehcile Type :%s\nFloor Location :%d\tSpace Location :%d\nEntry Time :%s\n",t.get(0),t.get(1),(int)t.get(3)+1,(int)t.get(4)+1,time);
                 No.remove(String.valueOf(t.get(0))+"-R"+vType);
                 No.add(String.valueOf(t.get(0)));
             }
@@ -110,13 +112,12 @@ public class Entry extends DB
                 pas.add(time);
                 No.add(String.valueOf(pas.get(0)));
                 add(vType,pas);
+                System.out.println("__________ Parking Entry Receipt __________");
+                System.out.printf("Vehicle No :%d\tVehcile Type :%s\nFloor Location :%d\tSpace Location :%d\nEntry Time :%s\n",pas.get(0),pas.get(1),(int)pas.get(3)+1,(int)pas.get(4)+1,pas.get(5));
             }
             else
                 System.out.println("Parking space not available");
-        }
-        System.out.println("__________ Parking Receipt __________");
-        System.out.printf("Vehicle No :%d\tVehcile Type :%s\nFloor Location :%d\tSpace Location :%d\nEntry Time :%s\n",pas.get(0),pas.get(1),(int)pas.get(3)+1,(int)pas.get(4)+1,pas.get(5));
-                    
+        }           
     }
     
     public void entryMethod()

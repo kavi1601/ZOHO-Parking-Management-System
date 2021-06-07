@@ -111,7 +111,7 @@ public class Exit extends DB
                     }
                 }
                 int amnt=calculateAmnt((String)t.get(5),time,vType,res);
-                System.out.println("__________ Parking Receipt __________");
+                System.out.println("__________ Parking Exit Receipt __________");
                 System.out.printf("Vehicle No :%d\tVehcile Type :%s\nFloor Location :%d\tSpace Location :%d\nEntry Time :%s\tExit Time:%s\nCharge Amount :%d\n",t.get(0),t.get(1),(int)t.get(3)+1,(int)t.get(4)+1,t.get(5),time,amnt);
                 if(vType=="Bike") 
                     bike.remove(t);
